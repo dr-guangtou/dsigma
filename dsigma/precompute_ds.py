@@ -146,14 +146,14 @@ def get_inv_photoz_bias(z_l, z_s_true, z_s_phot, cosmo, z_weights=1.0,
 
     """
     # The denominator
-    zp_bias_den = np.sum(
+    zp_bias_den = np.nansum(
         z_weights *
         sigma_crit(z_l, z_s_phot, cosmo, comoving=comoving) /
         sigma_crit(z_l, z_s_true, cosmo, comoving=comoving), axis=0
         )
 
     # The numerator
-    zp_bias_num = np.sum(z_weights, axis=0)
+    zp_bias_num = np.nansum(z_weights, axis=0)
 
     return zp_bias_num, zp_bias_den
 
@@ -344,12 +344,12 @@ def result_per_bin(results, matches, per_pair_results, idx, n_hist=100):
                                           per_pair_each_bin['inverse_sigma_crit']) ** 2))
 
     # Resolution selection bias
-    if len(per_pair_each_bin['r2']) > 1:
+    if len(per_pair_each_bin['r2']) > 0:
         result_bin['sum_num_m_sel'], result_bin['sum_den_m_sel'] = source_r2_selection(
             per_pair_each_bin['r2'], per_pair_each_bin['e_weight'],
             n_hist=n_hist, check=False, error=False)
     else:
-        result_bin['sum_num_m_sel'], result_bin['sum_den_m_sel'] = 0.0, 1.0
+        result_bin['sum_num_m_sel'], result_bin['sum_den_m_sel'] = 0.0, 0.0
 
     # Multiplicative bias (k)
     result_bin['sum_num_k'] = np.sum(per_pair_each_bin['bias_m_srcs'] *
@@ -510,6 +510,10 @@ def core_delta_sigma_function(lens, sources, cfg, cosmo, matches, calib=None):
             z_weights = calib[cfg['photoz_calib']['z_weight']]
         else:
             z_weights = np.full(len(calib[sf['z']]), 1.0)
+
+        # FIXME:
+        #z_weights *= 
+
         # Get the numerator and denominator for the zp_bias factor
         results['zp_bias_num'], results['zp_bias_den'] = get_inv_photoz_bias(
             np.full(len(calib[sf['z']]), lens[lf['z']]),

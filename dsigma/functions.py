@@ -212,13 +212,15 @@ def sigma_crit(zl, zs, cosmo, comoving=False):
         Critical surface density measurements
 
     """
-    dist_term = ((1e-6 * cosmo.Da(0, zs) /
-                  (cosmo.Da(zl, zs) * cosmo.Da(0, zl))))
+    if zl < zs:
+        dist_term = ((1e-6 * cosmo.Da(0, zs) / (cosmo.Da(zl, zs) * cosmo.Da(0, zl))))
 
-    if comoving:
-        return CSQUARE_OVER_4PIG * dist_term * (1.0 / (1. + zl)) ** 2
+        if comoving:
+            return CSQUARE_OVER_4PIG * dist_term * (1.0 / (1. + zl)) ** 2
 
-    return CSQUARE_OVER_4PIG * dist_term
+        return CSQUARE_OVER_4PIG * dist_term
+    else:
+        return np.inf
 
 
 def get_radial_bin_centers(cfg_binning):
