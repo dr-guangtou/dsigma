@@ -212,15 +212,12 @@ def sigma_crit(zl, zs, cosmo, comoving=False):
         Critical surface density measurements
 
     """
-    if zl < zs:
-        dist_term = ((1e-6 * cosmo.Da(0, zs) / (cosmo.Da(zl, zs) * cosmo.Da(0, zl))))
+    dist_term = ((1e-6 * cosmo.Da(0, zs) / (cosmo.Da(zl, zs) * cosmo.Da(0, zl))))
+    dist_term = np.where(zl >= zs, np.inf, dist_term)
 
-        if comoving:
-            return CSQUARE_OVER_4PIG * dist_term * (1.0 / (1. + zl)) ** 2
-
-        return CSQUARE_OVER_4PIG * dist_term
-    else:
-        return np.inf
+    if comoving:
+        return CSQUARE_OVER_4PIG * dist_term * (1.0 / (1. + zl)) ** 2
+    return CSQUARE_OVER_4PIG * dist_term
 
 
 def get_radial_bin_centers(cfg_binning):
@@ -359,7 +356,7 @@ def smooth_cov(arr, boxsize=1, trunc=0.2):
     cor_ori = np.corrcoef(np.asarray(arr), rowvar=False)
 
     # A uniform (boxcar) filter with a width of 1 radial bin
-    cor_smooth = ndimage.uniform_filter1d(cor_ori, boxsize, mode='nearest')
+    cor_smooth = ndimage.uniform_filter(cor_ori, boxsize, mode='nearest')
 
     # Truncate the correlation matrix
     cor_trunc = copy.deepcopy(cor_smooth)

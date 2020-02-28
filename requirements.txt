@@ -3,7 +3,7 @@ scipy
 matplotlib
 astropy
 pyyaml
-git+https://github.com/esheldon/cosmology
-git+https://github.com/esheldon/smatch
+#git+https://github.com/esheldon/cosmology
+#git+https://github.com/esheldon/smatch
 # Using this because https://github.com/esheldon/kmeans_radec doesn't support py3
-git+https://github.com/Christopher-Bradshaw/kmeans_radec
+#git+https://github.com/Christopher-Bradshaw/kmeans_radec
