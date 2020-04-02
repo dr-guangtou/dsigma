@@ -1,4 +1,5 @@
 ds_computation.key
+dsigma.egg_info
 .DS_Store
 .ipynb_checkpoints
 __pycache__
