@@ -1,5 +1,11 @@
 # `dsigma`: A simple pure-python galaxy-galaxy lensing pipeline
 
+
+## **Important**
+
+- Please see the new version of `dsigma` developed by Johannes Lange: https://github.com/johannesulf/dsigma 
+- Johannes has made so many improvements and completely re-design a much better interface. At this point, there is no pointing merging it back...Please make sure you use the most updated version. 
+
 * Song Huang, Alexie Leauthaud, Christopher Bradshaw, Felipe Ardila (UCSC), Josh Speagle (Harvard University).
 
 ----
